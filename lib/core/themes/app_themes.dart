@@ -6,7 +6,11 @@ final class const AppThemes._() {
   static const gradient = LinearGradient(
     begin: .topCenter,
     end: .bottomCenter,
-    colors: [AppColors.lightBlue, AppColors.blue, AppColors.blueDarker],
+    colors: [
+      AppColors.lightBlue, 
+      AppColors.blue, 
+      AppColors.darkBlue,
+    ],
   );
 
   static final appBar = AppBarTheme(
@@ -22,7 +26,7 @@ final class const AppThemes._() {
     statusBarColor: AppColors.lightBlue,
     statusBarIconBrightness: .dark,
     systemNavigationBarContrastEnforced: false,
-    systemNavigationBarColor: AppColors.blueDarker,
+    systemNavigationBarColor: AppColors.darkBlue,
     systemNavigationBarIconBrightness: .dark,
   );
 
@@ -33,7 +37,7 @@ final class const AppThemes._() {
 
   static const textTheme = TextTheme(
     displayLarge: TextStyle(
-      fontSize: 32,
+      fontSize: 70,
       color: AppColors.whiteBlueish,
       fontWeight: .bold,
     ),
@@ -42,15 +46,24 @@ final class const AppThemes._() {
       color: AppColors.whiteBlueish,
       fontWeight: .bold,
     ),
-    labelSmall: TextStyle(fontSize: 12, color: AppColors.whiteBlueish),
+    labelSmall: TextStyle(
+      fontSize: 14, 
+      color: AppColors.whiteBlueish,
+    ),
   );
 
   static final themeData = ThemeData(
     colorScheme: AppColors.colorScheme,
     appBarTheme: appBar,
     brightness: .light,
-    scaffoldBackgroundColor: AppColors.blueDarker,
+    scaffoldBackgroundColor: AppColors.darkBlue,
     iconTheme: iconTheme,
     textTheme: textTheme,
+    fontFamily: "ShareTech",
   );
+
+  static const stdPadding = EdgeInsets.all(10);
+  static const midPadding = EdgeInsets.all(14);
+
+  static const stdBorderRadius = BorderRadius.all(.circular(12));
 }
