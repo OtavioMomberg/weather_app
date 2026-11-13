@@ -17,7 +17,7 @@ class const GeneralCard({
         borderRadius: borderRadius,
       ),
       child: InkWell(
-        onTap: onTap,
+        onTap: () => onTap != null ? onTap!() : () {},
         borderRadius: borderRadius,
         child: Container(
           padding: padding,

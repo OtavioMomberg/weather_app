@@ -6,11 +6,7 @@ final class const AppThemes._() {
   static const gradient = LinearGradient(
     begin: .topCenter,
     end: .bottomCenter,
-    colors: [
-      AppColors.lightBlue, 
-      AppColors.blue, 
-      AppColors.darkBlue,
-    ],
+    colors: [AppColors.lightBlue, AppColors.blue, AppColors.darkBlue],
   );
 
   static final appBar = AppBarTheme(
@@ -46,10 +42,7 @@ final class const AppThemes._() {
       color: AppColors.whiteBlueish,
       fontWeight: .bold,
     ),
-    labelSmall: TextStyle(
-      fontSize: 14, 
-      color: AppColors.whiteBlueish,
-    ),
+    labelSmall: TextStyle(fontSize: 14, color: AppColors.whiteBlueish),
   );
 
   static final themeData = ThemeData(
@@ -57,6 +50,8 @@ final class const AppThemes._() {
     appBarTheme: appBar,
     brightness: .light,
     scaffoldBackgroundColor: AppColors.darkBlue,
+    splashColor: AppColors.blue.withValues(alpha: .7),
+    highlightColor: AppColors.blue.withValues(alpha: .5),
     iconTheme: iconTheme,
     textTheme: textTheme,
     fontFamily: "ShareTech",
@@ -66,4 +61,10 @@ final class const AppThemes._() {
   static const midPadding = EdgeInsets.all(14);
 
   static const stdBorderRadius = BorderRadius.all(.circular(12));
+  static const searchBarBorderRadius = BorderRadius.all(.circular(20));
+
+  static const searchBorder = RoundedRectangleBorder(
+    borderRadius: searchBarBorderRadius,
+    side: BorderSide(color: AppColors.whiteBlueish),
+  );
 }
