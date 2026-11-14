@@ -5,6 +5,8 @@ import 'package:weather_app/core/themes/app_themes.dart';
 class const GeneralCard({
   final BorderRadius borderRadius = AppThemes.stdBorderRadius,
   final EdgeInsets padding = AppThemes.midPadding,
+  final bool infinityWidth = false,
+  final double? height,
   final VoidCallback? onTap,
   final Widget? child, 
   super.key,
@@ -20,6 +22,8 @@ class const GeneralCard({
         onTap: () => onTap != null ? onTap!() : () {},
         borderRadius: borderRadius,
         child: Container(
+          height: height,
+          width: infinityWidth ? .infinity : null,
           padding: padding,
           decoration: BoxDecoration(
             borderRadius: borderRadius,
