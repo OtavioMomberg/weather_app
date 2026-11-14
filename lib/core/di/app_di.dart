@@ -1,5 +1,5 @@
 import 'package:http/http.dart';
-import 'package:weather_app/controllers/city_controller.dart';
+import 'package:weather_app/ui/controllers/city_controller.dart';
 import 'package:weather_app/data/repositories/city_implementation.dart';
 
 enum ControllerType { city }

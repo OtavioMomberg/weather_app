@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:weather_app/controllers/city_controller.dart';
+import 'package:weather_app/ui/controllers/city_controller.dart';
 
 class const SuggestionOptions({
   required final CityController cityController,

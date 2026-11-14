@@ -1,12 +1,13 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:weather_app/core/themes/app_colors.dart';
 import 'package:weather_app/core/themes/app_themes.dart';
 
 class const GeneralCard({
   final BorderRadius borderRadius = AppThemes.stdBorderRadius,
   final EdgeInsets padding = AppThemes.midPadding,
-  final bool infinityWidth = false,
   final double? height,
+  final double? width,
+  final Color? color,
+  final Color? borderColor,
   final VoidCallback? onTap,
   final Widget? child, 
   super.key,
@@ -14,7 +15,7 @@ class const GeneralCard({
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).colorScheme.surface,
+      color: color ?? Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: borderRadius,
       ),
@@ -23,11 +24,11 @@ class const GeneralCard({
         borderRadius: borderRadius,
         child: Container(
           height: height,
-          width: infinityWidth ? .infinity : null,
+          width: width,
           padding: padding,
           decoration: BoxDecoration(
             borderRadius: borderRadius,
-            border: .all(color: AppColors.whiteBlueish),
+            border: borderColor == null ? null : .all(color: borderColor!),
           ),
           child: child,
         ),

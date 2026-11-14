@@ -1,10 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_app/core/themes/app_themes.dart';
 import 'package:weather_app/core/utils/app_gate.dart';
 import 'package:weather_app/core/utils/city_storage.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   //WidgetsFlutterBinding.ensureInitialized();

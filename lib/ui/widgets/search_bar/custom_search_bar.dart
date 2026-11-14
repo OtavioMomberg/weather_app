@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:weather_app/controllers/city_controller.dart';
+import 'package:weather_app/ui/controllers/city_controller.dart';
 import 'package:weather_app/core/themes/app_colors.dart';
 import 'package:weather_app/core/themes/app_themes.dart';
 import 'package:weather_app/core/utils/debouncer.dart';
@@ -37,13 +37,13 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       searchController: widget.searchController,
       barHintText: "Pesquisar cidade...",
       textCapitalization: .sentences,
-      //isFullScreen: false,
       shrinkWrap: true,
       viewBackgroundColor: AppColors.blue,
+      barBackgroundColor: WidgetStatePropertyAll(
+        AppColors.blue.withValues(alpha: .8)
+      ),
       barElevation: WidgetStatePropertyAll(0),
-      viewElevation: 0,
       barShape: const WidgetStatePropertyAll(AppThemes.searchBorder),
-      viewShape: AppThemes.searchBorder,
       onChanged: _onSearchChanged,
       viewTrailing: [
         IconButton(

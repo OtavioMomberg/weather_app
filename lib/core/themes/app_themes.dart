@@ -6,11 +6,14 @@ final class const AppThemes._() {
   static const gradient = LinearGradient(
     begin: .topCenter,
     end: .bottomCenter,
-    colors: [AppColors.lightBlue, AppColors.blue, AppColors.darkBlue],
+    colors: [
+      AppColors.lightBlue, 
+      AppColors.blue, 
+      AppColors.darkBlue,
+    ],
   );
 
   static final appBar = AppBarTheme(
-    toolbarHeight: 0,
     surfaceTintColor: Colors.transparent,
     backgroundColor: AppColors.lightBlue,
     foregroundColor: AppColors.whiteBlueish,
@@ -42,7 +45,10 @@ final class const AppThemes._() {
       color: AppColors.whiteBlueish,
       fontWeight: .bold,
     ),
-    labelSmall: TextStyle(fontSize: 14, color: AppColors.whiteBlueish),
+    labelSmall: TextStyle(
+      fontSize: 14, 
+      color: AppColors.whiteBlueish
+    ),
   );
 
   static final themeData = ThemeData(
@@ -61,10 +67,9 @@ final class const AppThemes._() {
   static const midPadding = EdgeInsets.all(14);
 
   static const stdBorderRadius = BorderRadius.all(.circular(12));
-  static const searchBarBorderRadius = BorderRadius.all(.circular(20));
+  static const searchBarBorderRadius = BorderRadius.all(.circular(25));
 
   static const searchBorder = RoundedRectangleBorder(
     borderRadius: searchBarBorderRadius,
-    side: BorderSide(color: AppColors.whiteBlueish),
   );
 }
