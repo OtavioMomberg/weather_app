@@ -1,43 +1,17 @@
-import 'package:http/http.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:weather_app/core/di/app_di.dart';
 import 'package:weather_app/core/routes/app_routes.dart';
-import 'package:weather_app/core/utils/city_storage.dart';
-import 'package:weather_app/data/repositories/weather_implementation.dart';
-import 'package:weather_app/ui/controllers/weather_controller.dart';
+import 'package:weather_app/core/utils/data_source_service.dart';
 import 'package:weather_app/ui/screens/select_city_screen.dart';
 import 'package:weather_app/ui/widgets/formatted_container.dart';
 import 'package:weather_app/ui/widgets/general_card.dart';
 
-typedef Controller = AppDi<WeatherController>;
-
-class const HomeScreen({
-  required final CityStorage cityStorage,
-  super.key,
-}) extends StatefulWidget {
+class const HomeScreen({super.key}) extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final WeatherController _weatherController;
-  
-  @override
-  void initState() {
-    super.initState();
-    _weatherController = WeatherController(
-      repository: WeatherImplementation(
-        client: Client(),
-      ),
-    );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _weatherController.onGetWeather(
-        city: widget.cityStorage.cityName!
-      );
-      setState(() {});
-    });
-  }
+  final weather = DataSourceService.instance();
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () async {
-              await _weatherController.onGetWeather(
-                city: widget.cityStorage.cityName!
-              );
+              await weather.run();
               setState(() {});
             }, 
             icon: Icon(Icons.update),
@@ -58,9 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 AppRoutes.navigate(
-                  screen: SelectCityScreen(
-                    cityStorage: widget.cityStorage,
-                  ),
+                  screen: const SelectCityScreen(),
                 ),
               );
             }, 
@@ -80,14 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   spacing: 10,
                   children: <Widget>[
                     Text(
-                      _weatherController.getCurrent.name, 
+                      weather.weatherController.getCurrent.name, 
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Text(
-                      "${_weatherController.getCurrent.temperature}°", 
+                      "${weather.weatherController.getCurrent.temperature}°", 
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
-                    Text(_weatherController.getCurrent.condition)
+                    Text(weather.weatherController.getCurrent.condition)
                   ],
                 ),
               ),
@@ -97,14 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: GeneralCard(
                       child: Text(
-                        "Mínima: ${_weatherController.getCurrent.minTemp}°"
+                        "Mínima: ${weather.weatherController.getCurrent.minTemp}°"
                       ),
                     ),
                   ),
                   Expanded(
                     child: GeneralCard(
                       child: Text(
-                        "Máxima: ${_weatherController.getCurrent.maxTemp}°"
+                        "Máxima: ${weather.weatherController.getCurrent.maxTemp}°"
                       ),
                     ),
                   )
@@ -115,25 +85,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 200,
                 child: ListView.separated(
                   scrollDirection: .horizontal,
-                  itemCount: _weatherController.getHourByHour.length,
+                  itemCount: weather.weatherController.getHourByHour.length,
                   separatorBuilder: (_, _) { return const SizedBox(width: 10); },
                   itemBuilder: (context, index) {
                     return GeneralCard(
                       child: Text(
-                        "${_weatherController.getHourByHour[index].date} - "
-                        "${_weatherController.getHourByHour[index].hour}\n"
-                        "${_weatherController.getHourByHour[index].temperature}"
+                        "${weather.weatherController.getHourByHour[index].date} - "
+                        "${weather.weatherController.getHourByHour[index].hour}\n"
+                        "${weather.weatherController.getHourByHour[index].temperature}"
                       ),
                     );
                   }, 
                 ),
               ),
               Text("3-day forecast"),
-              ....generate(_weatherController.getForecast.length, (index) {
+              ....generate(weather.weatherController.getForecast.length, (index) {
                 return Text(
-                  "${_weatherController.getForecast[index].date}\n"
-                  "${_weatherController.getForecast[index].minTemp} - "
-                  "${_weatherController.getForecast[index].maxTemp}"
+                  "${weather.weatherController.getForecast[index].date}\n"
+                  "${weather.weatherController.getForecast[index].minTemp} - "
+                  "${weather.weatherController.getForecast[index].maxTemp}"
                 );
               }),
           

@@ -5,6 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_app/core/themes/app_themes.dart';
 import 'package:weather_app/core/utils/app_gate.dart';
 import 'package:weather_app/core/utils/city_storage.dart';
+
+final cityStorage = CityStorage.instance();
+
 void main() async {
   //WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
@@ -13,10 +16,9 @@ void main() async {
     final license = await rootBundle.loadString("assets/fonts/OFL.txt");
     yield LicenseEntryWithLineBreaks(["Google Fonts - ShareTech"], license);
   });
-
   await SystemChrome.setPreferredOrientations([.portraitUp, .portraitDown]);
   
-  await CityStorage.instance().loadCity();
+  await cityStorage.loadCity();
 
   runApp(const Weather());
 }
@@ -28,7 +30,7 @@ class const Weather({super.key}) extends StatelessWidget {
       title: "Weather",
       debugShowCheckedModeBanner: false,
       theme: AppThemes.themeData,
-      home: AppGate.getScreen(),
+      home: AppGate.getScreen(cityName: cityStorage.cityName),
     );
   }
 }

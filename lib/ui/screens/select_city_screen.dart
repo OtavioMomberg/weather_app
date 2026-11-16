@@ -1,19 +1,18 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:weather_app/core/utils/data_source_service.dart';
 import 'package:weather_app/ui/controllers/city_controller.dart';
 import 'package:weather_app/core/exports/select_screen_core_exports.dart';
 import 'package:weather_app/core/exports/select_screen_ui_exports.dart';
 
 typedef Controller = AppDi<CityController>;
 
-class const SelectCityScreen({
-  required final CityStorage cityStorage,
-  super.key,
-}) extends StatefulWidget {
+class const SelectCityScreen({super.key}) extends StatefulWidget {
   @override
   State<SelectCityScreen> createState() => _SelectCityScreenState();
 }
 
 class _SelectCityScreenState extends State<SelectCityScreen> {
+  final cityStorage = CityStorage.instance();
   late final CityController _cityController;
   late final SearchController searchController;
 
@@ -60,7 +59,7 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
               onTap: _saveCity,
             ),
             const SizedBox(height: 40),
-            if (widget.cityStorage.cityName != null) ...[
+            if (cityStorage.cityName != null) ...[
               Align(
                 alignment: .centerLeft,
                 child: Text(
@@ -77,7 +76,7 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
                   children: <Widget>[
                     const Icon(Icons.location_on),
                     Text(
-                      widget.cityStorage.cityName!,
+                      cityStorage.cityName!,
                       style: const TextStyle(
                         fontSize: 18, 
                         fontWeight: .bold,
@@ -95,15 +94,14 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
   
   Future<void> _saveCity() async {
     if (searchController.text == "") { return; }
-    await widget.cityStorage.getCity(newCity: searchController.text);
+    await cityStorage.getCity(newCity: searchController.text);
+    await DataSourceService.instance().run();
     if (!mounted) { return; }
     Navigator.popUntil(context, ((route) => route.isFirst));
     Navigator.pushReplacement(
       context,
       AppRoutes.navigate(
-        screen: HomeScreen(
-          cityStorage: widget.cityStorage,
-        ),
+        screen: const HomeScreen(),
       ),
     );
   }
