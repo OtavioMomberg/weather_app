@@ -3,7 +3,7 @@ import 'dart:convert';
 typedef MSD = Map<String, dynamic>;
 
 final class const ForecastModel({
-  required final DateTime date,
+  required final String date,
   required final double maxTemp,
   required final double minTemp,
   required final String maxTempIconURL,
@@ -21,7 +21,7 @@ final class const ForecastModel({
     final minTempIconURL = _getIcon(map: map, value: (map["day"]["mintemp_c"] as double));
 
     return ForecastModel(
-      date: map["date"] as DateTime, 
+      date: map["date"] as String, 
       maxTemp: map["day"]["maxtemp_c"] as double, 
       minTemp: map["day"]["mintemp_c"] as double, 
       maxTempIconURL: maxTempIconURL["condition"]["text"] as String, 

@@ -33,10 +33,7 @@ final class CityController({
     _errorGetCity = null;
     try {
       final response = await respository.getCity(query: query);
-
-      if (response.isNotEmpty) {
-        _cityModel.value = response;
-      }
+      _cityModel.value = response;
     } catch (error) {
       _errorGetCity = error.toString();
     }

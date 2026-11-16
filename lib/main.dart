@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_app/core/themes/app_themes.dart';
 import 'package:weather_app/core/utils/app_gate.dart';
 import 'package:weather_app/core/utils/city_storage.dart';
-
 void main() async {
   //WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
