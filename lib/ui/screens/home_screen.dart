@@ -14,28 +14,38 @@ class _HomeScreenState extends State<HomeScreen> {
   final weather = DataSourceService.instance();
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await weather.updateWeatherData();
+    });
+    if(weather.getDataChanged) {
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
             onPressed: () async {
-              await weather.run();
+              await weather.apiData();
               setState(() {});
-            }, 
+            },
             icon: Icon(Icons.update),
           ),
           IconButton(
             onPressed: () {
               Navigator.push(
                 context,
-                AppRoutes.navigate(
-                  screen: const SelectCityScreen(),
-                ),
+                AppRoutes.navigate(screen: const SelectCityScreen()),
               );
-            }, 
-            icon: const Icon(Icons.search)
-          )
+            },
+            icon: const Icon(Icons.search),
+          ),
         ],
       ),
       body: FormattedContainer(
@@ -50,14 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   spacing: 10,
                   children: <Widget>[
                     Text(
-                      weather.weatherController.getCurrent.name, 
+                      weather.getCurrent.name,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     Text(
-                      "${weather.weatherController.getCurrent.temperature}°", 
+                      "${weather.getCurrent.temperature}°",
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
-                    Text(weather.weatherController.getCurrent.condition)
+                    Text(weather.getCurrent.condition),
                   ],
                 ),
               ),
@@ -67,17 +77,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: GeneralCard(
                       child: Text(
-                        "Mínima: ${weather.weatherController.getCurrent.minTemp}°"
+                        "Mínima: ${weather.getCurrent.minTemp}°",
                       ),
                     ),
                   ),
                   Expanded(
                     child: GeneralCard(
                       child: Text(
-                        "Máxima: ${weather.weatherController.getCurrent.maxTemp}°"
+                        "Máxima: ${weather.getCurrent.maxTemp}°",
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
               Text("24 hours forecast"),
@@ -85,28 +95,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 200,
                 child: ListView.separated(
                   scrollDirection: .horizontal,
-                  itemCount: weather.weatherController.getHourByHour.length,
-                  separatorBuilder: (_, _) { return const SizedBox(width: 10); },
+                  itemCount: weather.getHourByHour.length,
+                  separatorBuilder: (_, _) {
+                    return const SizedBox(width: 10);
+                  },
                   itemBuilder: (context, index) {
                     return GeneralCard(
                       child: Text(
-                        "${weather.weatherController.getHourByHour[index].date} - "
-                        "${weather.weatherController.getHourByHour[index].hour}\n"
-                        "${weather.weatherController.getHourByHour[index].temperature}"
+                        "${weather.getHourByHour[index].date} - "
+                        "${weather.getHourByHour[index].hour}\n"
+                        "${weather.getHourByHour[index].temperature}",
                       ),
                     );
-                  }, 
+                  },
                 ),
               ),
               Text("3-day forecast"),
-              ....generate(weather.weatherController.getForecast.length, (index) {
+              ....generate(weather.getForecast.length, (
+                index,
+              ) {
                 return Text(
-                  "${weather.weatherController.getForecast[index].date}\n"
-                  "${weather.weatherController.getForecast[index].minTemp} - "
-                  "${weather.weatherController.getForecast[index].maxTemp}"
+                  "${weather.getForecast[index].date}\n"
+                  "${weather.getForecast[index].minTemp} - "
+                  "${weather.getForecast[index].maxTemp}",
                 );
               }),
-          
               Text("General Info (eg. Humidity, Pressure, UV Index...)"),
             ],
           ),

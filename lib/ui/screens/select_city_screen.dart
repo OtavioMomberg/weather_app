@@ -19,8 +19,7 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
   @override
   void initState() {
     super.initState();
-    _cityController = Controller().
-      getController(controllerType: .city);
+    _cityController = Controller().getController(controllerType: .city);
     searchController = SearchController();
   }
 
@@ -91,18 +90,16 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
       ),
     );
   }
-  
+
   Future<void> _saveCity() async {
     if (searchController.text == "") { return; }
     await cityStorage.getCity(newCity: searchController.text);
-    await DataSourceService.instance().run();
+    await DataSourceService.instance().apiData();
     if (!mounted) { return; }
     Navigator.popUntil(context, ((route) => route.isFirst));
     Navigator.pushReplacement(
       context,
-      AppRoutes.navigate(
-        screen: const HomeScreen(),
-      ),
+      AppRoutes.navigate(screen: const HomeScreen()),
     );
   }
 }

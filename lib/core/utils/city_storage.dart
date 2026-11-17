@@ -1,11 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/core/utils/data_source_service.dart';
 
+const city = "city";
+
 final class CityStorage._() {
   static final _instance = CityStorage._();
   factory instance() => _instance;
-
-  static const city = "city";
 
   late SharedPreferencesWithCache _prefs;
 
@@ -18,9 +18,12 @@ final class CityStorage._() {
       ),
     );
     _prefs.getString(city);
-    await DataSourceService.instance().run();
+
+    if (cityName != null) {
+      await DataSourceService.instance().localData();
+    }
   }
 
   Future<void> getCity({required String newCity}) async =>
-    await _prefs.setString(city, newCity);
+      await _prefs.setString(city, newCity);
 }
