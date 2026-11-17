@@ -24,8 +24,8 @@ final class const ForecastModel({
       date: map["date"] as String, 
       maxTemp: map["day"]["maxtemp_c"] as double, 
       minTemp: map["day"]["mintemp_c"] as double, 
-      maxTempIconURL: maxTempIconURL["condition"]["text"] as String, 
-      minTempIconURL: minTempIconURL["condition"]["text"] as String,
+      maxTempIconURL: maxTempIconURL["condition"]["icon"] as String, 
+      minTempIconURL: minTempIconURL["condition"]["icon"] as String,
     );
   }
 

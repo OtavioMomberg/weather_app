@@ -16,7 +16,7 @@ final class const HourByHourModel({
       date: date, 
       hour: justHour, 
       temperature: map["temp_c"] as double, 
-      iconURL: map["condition"]["text"] as String,
+      iconURL: map["condition"]["icon"] as String,
     );
   }
 
