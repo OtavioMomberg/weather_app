@@ -33,11 +33,11 @@ dependencies:
   material_ui: 
   http: 
   shared_preferences:
-  fl_chart: 
   flutter_launcher_icons:
   flutter_dotenv:   
   sqflite: 
   path:
+  custom_feedback:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

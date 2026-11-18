@@ -7,7 +7,7 @@ import 'package:weather_app/data/models/forecast_model.dart';
 import 'package:weather_app/data/models/hour_by_hour_model.dart';
 import 'package:weather_app/ui/controllers/weather_controller.dart';
 
-typedef Controller = AppDi<WeatherController>;
+typedef WController = AppDi<WeatherController>;
 typedef Hour = List<HourByHourModel>;
 typedef Forecast = List<ForecastModel>;
 typedef Current = CurrentWeatherModel;
@@ -23,9 +23,12 @@ final class DataSourceService._() {
   bool _dataChanged = false;
   bool get getDataChanged => _dataChanged;
 
+  bool _apiUpdated = false;
+  bool get getApiUpdated => _apiUpdated;
+
   final _db = LocalDatabase.instance();
 
-  final _weatherController = Controller().getController(
+  final _weatherController = WController().getController(
     controllerType: .weather,
   );
 
@@ -51,8 +54,11 @@ final class DataSourceService._() {
       _forecast..clear()..addAll(
         _weatherController.getWether.forecastModel);
       _dataChanged = true;
+      _apiUpdated = true;
       await localData();
+      return;
     }
+    _apiUpdated = false;
   }
 
   Future<void> localData() async {
@@ -110,7 +116,7 @@ final class DataSourceService._() {
       final toDateTime = DateTime.tryParse(lastCall);
       if (toDateTime != null) {
         if (DateTime.now().difference(toDateTime).inHours >= 1) {
-          apiData();
+          await apiData();
           _dataChanged = true;
         }
       }

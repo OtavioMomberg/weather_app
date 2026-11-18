@@ -1,10 +1,7 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:weather_app/core/utils/data_source_service.dart';
-import 'package:weather_app/ui/controllers/city_controller.dart';
 import 'package:weather_app/core/exports/select_screen_core_exports.dart';
-import 'package:weather_app/core/exports/select_screen_ui_exports.dart';
 
-typedef Controller = AppDi<CityController>;
+typedef CController = AppDi<CityController>;
 
 class const SelectCityScreen({super.key}) extends StatefulWidget {
   @override
@@ -19,7 +16,7 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
   @override
   void initState() {
     super.initState();
-    _cityController = Controller().getController(controllerType: .city);
+    _cityController = CController().getController(controllerType: .city);
     searchController = SearchController();
   }
 

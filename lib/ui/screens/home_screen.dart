@@ -1,17 +1,12 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:weather_app/core/routes/app_routes.dart';
-import 'package:weather_app/core/themes/app_colors.dart';
-import 'package:weather_app/core/utils/data_source_service.dart';
-import 'package:weather_app/ui/screens/select_city_screen.dart';
-import 'package:weather_app/ui/widgets/formatted_container.dart';
-import 'package:weather_app/ui/widgets/general_card.dart';
+import 'package:weather_app/core/exports/home_screen_core_exports.dart';
 
 class const HomeScreen({super.key}) extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
   final weather = DataSourceService.instance();
 
   @override
@@ -20,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await weather.updateWeatherData();
-      if(weather.getDataChanged) {
+      if (weather.getDataChanged) {
         setState(() {});
       }
     });
@@ -35,8 +30,16 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () async {
               await weather.apiData();
               setState(() {});
+              if (!context.mounted) { return; }
+              snackbar(
+                context: context, 
+                label: weather.getApiUpdated ? "Dados Atualizados" : "Erro ao Atualizar", 
+                labelColor: AppColors.darkBlue, 
+                backgroundColor: AppColors.whiteBlueish,
+                margin: .symmetric(horizontal: 10, vertical: 15)
+              );
             },
-            icon: Icon(Icons.update),
+            icon: const Icon(Icons.update),
           ),
           IconButton(
             onPressed: () {
@@ -55,222 +58,71 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             spacing: 5,
             children: <Widget>[
-              GeneralCard(
-                width: .infinity,
-                color: AppColors.darkBlue,
-                child: Column(
-                  spacing: 10,
-                  children: <Widget>[
-                    Text(
-                      weather.getCurrent.name,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    Text(
-                      "${weather.getCurrent.temperature}°",
-                      style: Theme.of(context).textTheme.displayLarge,
-                    ),
-                    Text(weather.getCurrent.condition),
-                  ],
-                ),
+              TemperatureCard(
+                name: weather.getCurrent.name,
+                temperature: weather.getCurrent.temperature.toString(),
+                condition: weather.getCurrent.condition,
               ),
               Row(
                 spacing: 5,
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: GeneralCard(
                       color: AppColors.darkBlue.withValues(alpha: .5),
-                      child: Text(
-                        "Mínima: ${weather.getCurrent.minTemp}°",
-                      ),
+                      child: Text("Mínima: ${weather.getCurrent.minTemp}°"),
                     ),
                   ),
                   Expanded(
                     child: GeneralCard(
                       color: AppColors.darkBlue.withValues(alpha: .5),
-                      child: Text(
-                        "Máxima: ${weather.getCurrent.maxTemp}°",
-                      ),
+                      child: Text("Máxima: ${weather.getCurrent.maxTemp}°"),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              GeneralCard(
-                child: Column(
-                  spacing: 10,
-                  children: [
-                    Align(
-                      alignment: .centerLeft,
-                      child: Text("Previsão de 24 horas"),
-                    ),
-                    SizedBox(
-                      height: 180,
-                      child: ListView.builder(
-                        scrollDirection: .horizontal,
-                        itemCount: weather.getHourByHour.length,
-                        itemExtent: 100,
-                        itemBuilder: (context, index) {
-                          return GeneralCard(
-                            padding: .symmetric(vertical: 14),
-                            color: Colors.transparent,
-                            child: Column(
-                              children: [
-                                Text("${weather.getHourByHour[index].temperature}°"),
-                                Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
-                                const SizedBox(height: 10),
-                                Image.network(
-                                  "https:${weather.getHourByHour[index].iconURL}",
-                                  height: 50,
-                                ),
-                                const SizedBox(height: 5),
-                                Text("${weather.getHourByHour[index].hour} "),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-
               GeneralCard(
                 width: .infinity,
-                child: Column(
-                  children: [
-                    Align(
-                      alignment: .centerLeft,
-                      child: Text("Previsão para 3 dias"),
-                    ),
-                    const SizedBox(height: 10,),
-                    ....generate(weather.getForecast.length, (index) {
-                      return Padding(
-                        padding: const .only(bottom: 10),
-                        child: GeneralCard(
-                          color: AppColors.darkBlue.withValues(alpha: .5),
-                          child: Row(
-                            mainAxisAlignment: .spaceBetween,
-                            children: [
-                              Text("${weather.getForecast[index].date} "),
-                              if (DateTime.now().hour >= 12)...[
-                                Image.network(
-                                  "https:${weather.getForecast[index].maxTempIconURL}",
-                                  width: 35,
-                                ),
-                              ] else...[
-                                Image.network(
-                                  "https:${weather.getForecast[index].minTempIconURL}",
-                                  width: 35,
-                                ),
-                              ],
-                              Row(
-                                spacing: 10,
-                                children: [
-                                  GeneralCard(
-                                    child: Center(
-                                      child: Text("${weather.getForecast[index].minTemp}°"),
-                                    )
-                                  ),
-                                  GeneralCard(
-                                    child: Center(
-                                      child: Text("${weather.getForecast[index].maxTemp}°")
-                                    )
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
-                )
+                color: AppColors.darkBlue.withValues(alpha: .5),
+                child: Text(
+                  "Chance de Chuva: ${weather.getCurrent.chanceRain}%",
+                ),
               ),
-              const SizedBox(height: 10),
-              Row(
-                spacing: 10,
-                children: [
-                  Expanded(
-                    child: GeneralCard(
-                      height: 150,
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: .centerLeft,
-                            child: Text("UV Index"),
-                          ),
-                          Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
-                          const SizedBox(height: 20),
-                          Text(
-                            "${weather.getCurrent.uvIndex}",
-                            style: const TextStyle(fontSize: 25),
-                          ),
-                        ],
-                      )
-                    ),
-                  ),
-                  Expanded(
-                    child: GeneralCard(
-                      height: 150,
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: .centerLeft,
-                            child: Text("Umidade"),
-                          ),
-                          Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
-                          const SizedBox(height: 20),
-                          Text(
-                            "${weather.getCurrent.humidity}%",
-                            style: const TextStyle(fontSize: 25),
-                          ),
-                        ],
-                      )
-                    ),
-                  ),
-                ],
-              ),
+              const SizedBox(height: 5),
+              OneDayForecastCard(hourByHour: weather.getHourByHour),
+              const SizedBox(height: 5),
+              ThreeDayForecastCard(forecast: weather.getForecast),
               const SizedBox(height: 5),
               Row(
                 spacing: 10,
-                children: [
+                children: <Widget>[
                   Expanded(
-                    child: GeneralCard(
-                      height: 150,
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: .centerLeft,
-                            child: Text("Pressão (mbar)"),
-                          ),
-                          Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
-                          const SizedBox(height: 20),
-                          Text(
-                            "${weather.getCurrent.pressureMB}",
-                            style: const TextStyle(fontSize: 25),
-                          ),
-                        ],
-                      )
+                    child: _ExtraInfoCard(
+                      title: "UV Index", 
+                      content: "${weather.getCurrent.uvIndex}",
+                      extra: "${_getUVIndex(uv: weather.getCurrent.uvIndex)} ",
                     ),
                   ),
                   Expanded(
-                    child: GeneralCard(
-                      height: 150,
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: .centerLeft,
-                            child: Text("Sensação Termíca"),
-                          ),
-                          Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
-                          const SizedBox(height: 20),
-                          Text(
-                            "${weather.getCurrent.feelslike}°",
-                            style: const TextStyle(fontSize: 25),
-                          ),
-                        ],
-                      )
+                    child: _ExtraInfoCard(
+                      title: "Umidade", 
+                      content: "${weather.getCurrent.humidity}%",
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                spacing: 10,
+                children: <Widget>[
+                  Expanded(
+                    child: _ExtraInfoCard(
+                      title: "Pressão (mbar)", 
+                      content: "${weather.getCurrent.pressureMB}",
+                    ),
+                  ),
+                  Expanded(
+                    child: _ExtraInfoCard(
+                      title: "Sensação Termíca", 
+                      content: "${weather.getCurrent.feelslike}°",
                     ),
                   ),
                 ],
@@ -278,6 +130,51 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  String _getUVIndex({required double uv}) {
+    if (uv <= 2) { return "Baixo"; }
+    if (uv <= 5) { return "Moderado"; }
+    if (uv <= 7) { return "Alto"; }
+    return "Muito Alto";
+  }
+}
+
+class const _ExtraInfoCard({
+  required final String title,
+  required final String content,
+  final String? extra,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GeneralCard(
+      height: 150,
+      child: Column(
+        children: <Widget>[
+          Align(
+            alignment: .centerLeft, 
+            child: Text(title),
+          ),
+          Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
+          const SizedBox(height: 20),
+          if (extra != null)...[
+            Text(
+              extra!, 
+              style: const TextStyle(
+                fontSize: 16, 
+                fontWeight: .bold,
+              ),
+              textAlign: .center,
+            ),
+          ],
+          Text(
+            content, 
+            style: const TextStyle(fontSize: 25),
+            textAlign: .center,
+          ),
+        ],
       ),
     );
   }

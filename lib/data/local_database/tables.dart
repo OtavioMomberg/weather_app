@@ -5,6 +5,7 @@ const currentName = "name";
 const currentTemperature = "temperature";
 const currentMaxTemp = "max_temp";
 const currentMinTemp = "min_temp";
+const currentChanceRain = "chance_of_rain";
 const currentCondition = "condition";
 const currentPressureMB = "pressure_mb";
 const currentHumidity = "humidity";
@@ -20,6 +21,7 @@ final currentTable = '''
     $currentTemperature REAL NOT NULL,
     $currentMaxTemp REAL NOT NULL,
     $currentMinTemp REAL NOT NULL,
+    $currentChanceRain INTEGER NOT NULL,
     $currentCondition TEXT NOT NULL,
     $currentPressureMB REAL NOT NULL,
     $currentHumidity INTEGER NOT NULL,
