@@ -127,6 +127,11 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              Align(
+                alignment: .center,
+                child: const Text("Dados fornecidos da WeatherAPI"),
+              ),
             ],
           ),
         ),
