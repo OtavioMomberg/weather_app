@@ -25,5 +25,5 @@ final class CityStorage._() {
   }
 
   Future<void> getCity({required String newCity}) async =>
-      await _prefs.setString(city, newCity);
+    await _prefs.setString(city, newCity);
 }

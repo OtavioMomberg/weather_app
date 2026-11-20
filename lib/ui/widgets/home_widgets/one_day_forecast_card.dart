@@ -36,7 +36,7 @@ class const OneDayForecastCard({
                         "https:${hourByHour[index].iconURL}",
                         height: 50,
                         errorBuilder: (context, _, _) =>
-                          const Icon(Icons.broken_image),
+                          const Icon(Icons.broken_image, size: 30),
                       ),
                       const SizedBox(height: 5),
                       Text(hourByHour[index].hour),

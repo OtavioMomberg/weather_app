@@ -65,6 +65,7 @@ final class const AppThemes._() {
 
   static const stdPadding = EdgeInsets.all(10);
   static const midPadding = EdgeInsets.all(14);
+  static const snackBarPadding = EdgeInsets.symmetric(horizontal: 10, vertical: 15);
 
   static const stdBorderRadius = BorderRadius.all(.circular(12));
   static const searchBarBorderRadius = BorderRadius.all(.circular(25));

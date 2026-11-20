@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:weather_app/core/exports/home_screen_core_exports.dart';
+import 'package:weather_app/core/exports/select_screen_core_exports.dart';
 
 class const HomeScreen({super.key}) extends StatefulWidget {
   @override
@@ -33,10 +34,12 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
               if (!context.mounted) { return; }
               snackbar(
                 context: context, 
-                label: weather.getApiUpdated ? "Dados Atualizados" : "Erro ao Atualizar", 
+                label: weather.getApiUpdated 
+                  ? "Dados Atualizados" : "Erro ao Atualizar", 
                 labelColor: AppColors.darkBlue, 
                 backgroundColor: AppColors.whiteBlueish,
-                margin: .symmetric(horizontal: 10, vertical: 15)
+                padding: AppThemes.snackBarPadding,
+                margin: AppThemes.snackBarPadding
               );
             },
             icon: const Icon(Icons.update),
@@ -130,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
               const SizedBox(height: 5),
               Align(
                 alignment: .center,
-                child: const Text("Dados fornecidos da WeatherAPI"),
+                child: const Text("Dados fornecidos pela WeatherAPI"),
               ),
             ],
           ),

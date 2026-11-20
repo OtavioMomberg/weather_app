@@ -104,131 +104,125 @@ final class LocalDatabase._() {
   //                                      INSERT
   //---------------------------------------------------------------------------------------------
 
-  Future<int> insertCurrent({
-    required CurrentWeatherModel model,
+  Future<void> insert({
+    required CurrentWeatherModel cModel,
+    required List<HourByHourModel> hModel,
+    required List<ForecastModel> fModel,
     required String lastApiCall,
   }) async {
     final db = await database;
 
-    return await db.insert(
-      currentWeather,
-      {
-        currentId: 1,
-        currentName: model.name,
-        currentTemperature: model.temperature,
-        currentMaxTemp: model.maxTemp,
-        currentMinTemp: model.minTemp,
-        currentChanceRain: model.chanceRain,
-        currentCondition: model.condition,
-        currentPressureMB: model.pressureMB,
-        currentHumidity: model.humidity,
-        currentFeelslike: model.feelslike,
-        currentUvIndex: model.uvIndex,
-        currentLastUpdated: model.lastUpdated,
-        lastAPICall: lastApiCall,
-      },
-      conflictAlgorithm: .replace,
-    );
-  }
+    await db.transaction((txn) async {
+      await txn.insert(
+        currentWeather,
+        {
+          currentId: 1,
+          currentName: cModel.name,
+          currentTemperature: cModel.temperature,
+          currentMaxTemp: cModel.maxTemp,
+          currentMinTemp: cModel.minTemp,
+          currentChanceRain: cModel.chanceRain,
+          currentCondition: cModel.condition,
+          currentPressureMB: cModel.pressureMB,
+          currentHumidity: cModel.humidity,
+          currentFeelslike: cModel.feelslike,
+          currentUvIndex: cModel.uvIndex,
+          currentLastUpdated: cModel.lastUpdated,
+          lastAPICall: lastApiCall,
+        },
+        conflictAlgorithm: .replace,
+      );
 
-  Future<int> insertHour({required HourByHourModel model}) async {
-    final db = await database;
+      for (var item in hModel) {
+        await txn.insert(
+          hour, 
+          {
+            hourDate: item.date,
+            hourHour: item.hour,
+            hourTemperature: item.temperature,
+            hourIconURL: item.iconURL,
+          },
+          conflictAlgorithm: .replace,
+        );
+      }
 
-    return await db.insert(
-      hour,
-      {
-        hourDate: model.date,
-        hourHour: model.hour,
-        hourTemperature: model.temperature,
-        hourIconURL: model.iconURL,
-      },
-      conflictAlgorithm: .replace,
-    );
-  }
-
-  Future<int> insertForecast({required ForecastModel model}) async {
-    final db = await database;
-
-    return await db.insert(
-      forecast,
-      {
-        forecastDate: model.date,
-        forecastMaxTemp: model.maxTemp,
-        forecastMinTemp: model.minTemp,
-        forecastMaxTempIconURL: model.maxTempIconURL,
-        forecastMinTempIconURL: model.minTempIconURL,
-      },
-      conflictAlgorithm: .replace,
-    );
+      for (var item in fModel) {
+        await txn.insert(
+          forecast, 
+          {
+            forecastDate: item.date,
+            forecastMaxTemp: item.maxTemp,
+            forecastMinTemp: item.minTemp,
+            forecastMaxTempIconURL: item.maxTempIconURL,
+            forecastMinTempIconURL: item.minTempIconURL,
+          },
+          conflictAlgorithm: .replace,
+        );
+      }
+    });
   }
 
   //---------------------------------------------------------------------------------------------
   //                                      UPDATE
   //---------------------------------------------------------------------------------------------
 
-  Future<int> updateCurrent({
-    required CurrentWeatherModel model,
+  Future<void> update({
+    required CurrentWeatherModel cModel,
     required String lastApiCall,
+    required List<HourByHourModel> hModel, 
+    required List<ForecastModel> fModel, 
   }) async {
     final db = await database;
 
-    return await db.update(
-      currentWeather,
-      {
-        currentName: model.name,
-        currentTemperature: model.temperature,
-        currentMaxTemp: model.maxTemp,
-        currentMinTemp: model.minTemp,
-        currentChanceRain: model.chanceRain,
-        currentCondition: model.condition,
-        currentPressureMB: model.pressureMB,
-        currentHumidity: model.humidity,
-        currentFeelslike: model.feelslike,
-        currentUvIndex: model.uvIndex,
-        currentLastUpdated: model.lastUpdated,
-        lastAPICall: lastApiCall,
-      },
-      where: "$currentId = ?",
-      whereArgs: [1],
-    );
-  }
+    await db.transaction((txn) async {
+      await txn.update(
+        currentWeather,
+        {
+          currentName: cModel.name,
+          currentTemperature: cModel.temperature,
+          currentMaxTemp: cModel.maxTemp,
+          currentMinTemp: cModel.minTemp,
+          currentChanceRain: cModel.chanceRain,
+          currentCondition: cModel.condition,
+          currentPressureMB: cModel.pressureMB,
+          currentHumidity: cModel.humidity,
+          currentFeelslike: cModel.feelslike,
+          currentUvIndex: cModel.uvIndex,
+          currentLastUpdated: cModel.lastUpdated,
+          lastAPICall: lastApiCall,
+        },
+        where: "$currentId = ?",
+        whereArgs: [1],
+      );
 
-  Future<int> updateHour({
-    required HourByHourModel model, 
-    required int id
-  }) async {
-    final db = await database;
+      for (int i=0; i<hModel.length; i++) {
+        await txn.update(
+          hour,
+          {
+            hourDate: hModel[i].date,
+            hourHour: hModel[i].hour,
+            hourTemperature: hModel[i].temperature,
+            hourIconURL: hModel[i].iconURL,
+          },
+          where: "$hourId = ?",
+          whereArgs: [i+1],
+        );
+      }
 
-    return await db.update(
-      hour,
-      {
-        hourDate: model.date,
-        hourHour: model.hour,
-        hourTemperature: model.temperature,
-        hourIconURL: model.iconURL,
-      },
-      where: "$hourId = ?",
-      whereArgs: [id],
-    );
-  }
-
-  Future<int> updateForecast({
-    required ForecastModel model, 
-    required int id
-  }) async {
-    final db = await database;
-
-    return await db.update(
-      forecast,
-      {
-        forecastDate: model.date,
-        forecastMaxTemp: model.maxTemp,
-        forecastMinTemp: model.minTemp,
-        forecastMaxTempIconURL: model.maxTempIconURL,
-        forecastMinTempIconURL: model.minTempIconURL,
-      },
-      where: "$forecastId = ?",
-      whereArgs: [id],
-    );
+      for (int i=0; i<fModel.length; i++) {
+        await txn.update(
+          forecast,
+          {
+            forecastDate: fModel[i].date,
+            forecastMaxTemp: fModel[i].maxTemp,
+            forecastMinTemp: fModel[i].minTemp,
+            forecastMaxTempIconURL: fModel[i].maxTempIconURL,
+            forecastMinTempIconURL: fModel[i].minTempIconURL,
+          },
+          where: "$forecastId = ?",
+          whereArgs: [i+1],
+        );
+      }
+    });
   }
 }
