@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:weather_app/core/exports/home_screen_core_exports.dart';
-import 'package:weather_app/core/exports/select_screen_core_exports.dart';
+import 'package:weather_app/core/themes/app_themes.dart';
+
 
 class const HomeScreen({super.key}) extends StatefulWidget {
   @override
@@ -28,27 +29,16 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () async {
-              await weather.apiData();
-              setState(() {});
-              if (!context.mounted) { return; }
-              snackbar(
-                context: context, 
-                label: weather.getApiUpdated 
-                  ? "Dados Atualizados" : "Erro ao Atualizar", 
-                labelColor: AppColors.darkBlue, 
-                backgroundColor: AppColors.whiteBlueish,
-                padding: AppThemes.snackBarPadding,
-                margin: AppThemes.snackBarPadding
-              );
-            },
+            onPressed: _refreshData,
             icon: const Icon(Icons.update),
           ),
           IconButton(
             onPressed: () {
               Navigator.push(
                 context,
-                AppRoutes.navigate(screen: const SelectCityScreen()),
+                AppRoutes.navigate(
+                  screen: const SelectCityScreen(),
+                ),
               );
             },
             icon: const Icon(Icons.search),
@@ -60,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
         child: SingleChildScrollView(
           child: Column(
             spacing: 5,
-            children: <Widget>[
+            children: [
               TemperatureCard(
                 name: weather.getCurrent.name,
                 temperature: weather.getCurrent.temperature.toString(),
@@ -68,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
               ),
               Row(
                 spacing: 5,
-                children: <Widget>[
+                children: [
                   Expanded(
                     child: GeneralCard(
                       color: AppColors.darkBlue.withValues(alpha: .5),
@@ -97,16 +87,16 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
               const SizedBox(height: 5),
               Row(
                 spacing: 10,
-                children: <Widget>[
+                children: [
                   Expanded(
-                    child: _ExtraInfoCard(
+                    child: ExtraInfoCard(
                       title: "UV Index", 
                       content: "${weather.getCurrent.uvIndex}",
-                      extra: "${_getUVIndex(uv: weather.getCurrent.uvIndex)} ",
+                      extra: _getUVIndex(uv: weather.getCurrent.uvIndex),
                     ),
                   ),
                   Expanded(
-                    child: _ExtraInfoCard(
+                    child: ExtraInfoCard(
                       title: "Umidade", 
                       content: "${weather.getCurrent.humidity}%",
                     ),
@@ -115,15 +105,15 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
               ),
               Row(
                 spacing: 10,
-                children: <Widget>[
+                children: [
                   Expanded(
-                    child: _ExtraInfoCard(
+                    child: ExtraInfoCard(
                       title: "Pressão (mbar)", 
                       content: "${weather.getCurrent.pressureMB}",
                     ),
                   ),
                   Expanded(
-                    child: _ExtraInfoCard(
+                    child: ExtraInfoCard(
                       title: "Sensação Termíca", 
                       content: "${weather.getCurrent.feelslike}°",
                     ),
@@ -148,42 +138,19 @@ class _HomeScreenState extends State<HomeScreen> with SnackbarMixin {
     if (uv <= 7) { return "Alto"; }
     return "Muito Alto";
   }
-}
 
-class const _ExtraInfoCard({
-  required final String title,
-  required final String content,
-  final String? extra,
-}) extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GeneralCard(
-      height: 150,
-      child: Column(
-        children: <Widget>[
-          Align(
-            alignment: .centerLeft, 
-            child: Text(title),
-          ),
-          Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
-          const SizedBox(height: 20),
-          if (extra != null)...[
-            Text(
-              extra!, 
-              style: const TextStyle(
-                fontSize: 16, 
-                fontWeight: .bold,
-              ),
-              textAlign: .center,
-            ),
-          ],
-          Text(
-            content, 
-            style: const TextStyle(fontSize: 25),
-            textAlign: .center,
-          ),
-        ],
-      ),
+  Future<void> _refreshData() async {
+    await weather.apiData();
+    setState(() {});
+    if (!mounted) { return; }
+    snackbar(
+      context: context, 
+      label: weather.getApiUpdated 
+        ? "Dados Atualizados" : "Erro ao Atualizar", 
+      labelColor: AppColors.darkBlue, 
+      backgroundColor: AppColors.whiteBlueish,
+      padding: AppThemes.snackBarPadding,
+      margin: AppThemes.snackBarPadding,
     );
   }
 }

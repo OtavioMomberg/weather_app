@@ -52,6 +52,7 @@ final class DataSourceService._() {
       _dataChanged = true;
       _apiUpdated = true;
       await localData();
+      _dataChanged = true;
       return;
     }
     _apiUpdated = false;

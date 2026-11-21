@@ -34,7 +34,7 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
       body: FormattedContainer(
         useSafeArea: true,
         child: Column(
-          children: <Widget>[
+          children: [
             const SizedBox(height: 10),
             Text(
               "Selecione uma Cidade",
@@ -69,7 +69,7 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
                 color: AppColors.darkBlue,
                 child: Row(
                   spacing: 5,
-                  children: <Widget>[
+                  children: [
                     const Icon(Icons.location_on),
                     Text(
                       cityStorage.cityName!,

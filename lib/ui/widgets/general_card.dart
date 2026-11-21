@@ -28,7 +28,8 @@ class const GeneralCard({
           padding: padding,
           decoration: BoxDecoration(
             borderRadius: borderRadius,
-            border: borderColor == null ? null : .all(color: borderColor!),
+            border: borderColor == null 
+              ? null : .all(color: borderColor!),
           ),
           child: child,
         ),

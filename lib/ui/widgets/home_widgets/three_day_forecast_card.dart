@@ -12,7 +12,7 @@ class const ThreeDayForecastCard({
     return GeneralCard(
       width: .infinity,
       child: Column(
-        children: <Widget>[
+        children: [
           Align(
             alignment: .centerLeft, 
             child: Text("Previsão para 3 dias"),
@@ -25,7 +25,7 @@ class const ThreeDayForecastCard({
                 color: AppColors.darkBlue.withValues(alpha: .5),
                 child: Row(
                   mainAxisAlignment: .spaceBetween,
-                  children: <Widget>[
+                  children: [
                     Text("${forecast[index].date} "),
                     _getImage(
                       maxTempIconURL: forecast[index].maxTempIconURL, 
@@ -33,7 +33,7 @@ class const ThreeDayForecastCard({
                     ),
                     Row(
                       spacing: 10,
-                      children: <Widget>[
+                      children: [
                         GeneralCard(
                           child: Center(
                             child: Text("${forecast[index].minTemp}°"),

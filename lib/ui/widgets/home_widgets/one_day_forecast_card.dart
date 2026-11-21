@@ -12,7 +12,7 @@ class const OneDayForecastCard({
     return GeneralCard(
       child: Column(
         spacing: 10,
-        children: <Widget>[
+        children: [
           Align(
             alignment: .centerLeft, 
             child: Text("Previsão de 24 horas"),
@@ -28,7 +28,7 @@ class const OneDayForecastCard({
                   padding: .symmetric(vertical: 14),
                   color: Colors.transparent,
                   child: Column(
-                    children: <Widget>[
+                    children: [
                       Text("${hourByHour[index].temperature}°"),
                       Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
                       const SizedBox(height: 10),

@@ -51,6 +51,10 @@ final class const AppThemes._() {
     ),
   );
 
+  static const textSelectionTheme = TextSelectionThemeData(
+    cursorColor: AppColors.whiteBlueish
+  );
+
   static final themeData = ThemeData(
     colorScheme: AppColors.colorScheme,
     appBarTheme: appBar,
@@ -60,6 +64,7 @@ final class const AppThemes._() {
     highlightColor: AppColors.lightBlue.withValues(alpha: .5),
     iconTheme: iconTheme,
     textTheme: textTheme,
+    textSelectionTheme: textSelectionTheme,
     fontFamily: "ShareTech",
   );
 

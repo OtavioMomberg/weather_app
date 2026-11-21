@@ -22,8 +22,8 @@ class const Button({
         child: Center(
           child: Text(
             label,
-            style: Theme.of(context).textTheme.headlineMedium
-              ?.copyWith(color: textColor),
+            style: Theme.of(context).textTheme.
+              headlineMedium?.copyWith(color: textColor),
           ),
         ),
       ),

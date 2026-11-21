@@ -4,3 +4,4 @@ export 'package:weather_app/ui/widgets/general_card.dart';
 export 'package:weather_app/ui/widgets/home_widgets/one_day_forecast_card.dart';
 export 'package:weather_app/ui/widgets/home_widgets/temperature_card.dart';
 export 'package:weather_app/ui/widgets/home_widgets/three_day_forecast_card.dart';
+export 'package:weather_app/ui/widgets/home_widgets/extra_info_card.dart';

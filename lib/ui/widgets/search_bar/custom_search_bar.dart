@@ -54,13 +54,12 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           icon: const Icon(Icons.close),
         ),
       ],
-      suggestionsBuilder: (context, controller) =>
-        [
-          SuggestionOptions(
-            cityController: widget.cityController, 
-            controller: controller,
-          ),
-        ]
+      suggestionsBuilder: (context, controller) => [
+        SuggestionOptions(
+          cityController: widget.cityController, 
+          controller: controller,
+        ),
+      ],
     );
   }
 

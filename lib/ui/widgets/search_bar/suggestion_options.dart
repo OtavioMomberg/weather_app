@@ -13,7 +13,7 @@ class const SuggestionOptions({
       builder: (context, cities, _) {
         return Column(
           mainAxisSize: .min,
-          children: <Widget>[
+          children: [
             ...cities.map((city) {
               return ListTile(
                 onTap: () {

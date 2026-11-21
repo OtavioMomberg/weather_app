@@ -15,7 +15,7 @@ class const TemperatureCard({
       color: AppColors.darkBlue,
       child: Column(
         spacing: 10,
-        children: <Widget>[
+        children: [
           Text(
             name, 
             style: Theme.of(context).textTheme.headlineMedium,
