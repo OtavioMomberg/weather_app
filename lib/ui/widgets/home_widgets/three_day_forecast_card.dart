@@ -26,22 +26,37 @@ class const ThreeDayForecastCard({
                 child: Row(
                   mainAxisAlignment: .spaceBetween,
                   children: [
-                    Text("${forecast[index].date} "),
+                    Text(
+                      index == 0 ? "Hoje" : forecast[index].date,
+                      style: TextStyle(
+                        fontWeight: index == 0 ? .bold : null,
+                      ),
+                    ),
                     _getImage(
                       maxTempIconURL: forecast[index].maxTempIconURL, 
                       minTempIconURL: forecast[index].minTempIconURL
                     ),
                     Row(
-                      spacing: 10,
+                      spacing: 5,
                       children: [
                         GeneralCard(
                           child: Center(
-                            child: Text("${forecast[index].minTemp}°"),
+                            child: Text(
+                              "${forecast[index].minTemp}°",
+                              style: TextStyle(
+                                fontWeight: index == 0 ? .bold : null,
+                              ),
+                            ),
                           ),
                         ),
                         GeneralCard(
                           child: Center(
-                            child: Text("${forecast[index].maxTemp}°"),
+                            child: Text(
+                              "${forecast[index].maxTemp}°",
+                              style: TextStyle(
+                                fontWeight: index == 0 ? .bold : null,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -61,16 +76,9 @@ Widget _getImage({
   required String maxTempIconURL, 
   required String minTempIconURL
 }) {
-  if (DateTime.now().hour >= 12) {
-    return Image.network(
-      "https:$maxTempIconURL",
-      width: 35,
-      errorBuilder: (context, _, _) 
-        => const Icon(Icons.broken_image),
-    );
-  }
   return Image.network(
-    "https:$minTempIconURL",
+    DateTime.now().hour >= 12 
+      ? maxTempIconURL : minTempIconURL,
     width: 35,
     errorBuilder: (context, _, _) 
       => const Icon(Icons.broken_image),

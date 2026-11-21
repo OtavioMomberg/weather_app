@@ -6,7 +6,7 @@ import 'package:weather_app/core/themes/app_themes.dart';
 import 'package:weather_app/core/utils/app_gate.dart';
 import 'package:weather_app/core/utils/city_storage.dart';
 
-final cityStorage = CityStorage.instance();
+final _cityStorage = CityStorage.instance();
 
 void main() async {
   //WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ void main() async {
   });
   await SystemChrome.setPreferredOrientations([.portraitUp, .portraitDown]);
   
-  await cityStorage.loadCity();
+  await _cityStorage.loadCity();
 
   runApp(const Weather());
 }
@@ -30,7 +30,7 @@ class const Weather({super.key}) extends StatelessWidget {
       title: "Weather",
       debugShowCheckedModeBanner: false,
       theme: AppThemes.themeData,
-      home: AppGate.getScreen(cityName: cityStorage.cityName),
+      home: AppGate.getScreen(cityName: _cityStorage.cityName),
     );
   }
 }

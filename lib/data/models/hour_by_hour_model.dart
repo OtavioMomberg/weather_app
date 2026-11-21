@@ -11,12 +11,13 @@ final class const HourByHourModel({
   factory fromMap({required MSD map, required String date}) {
     final hour = (map["time"] as String);
     final justHour = hour.substring(hour.length-5);
+    final icon = map["condition"]["icon"] as String;
 
     return HourByHourModel(
       date: date, 
       hour: justHour, 
       temperature: map["temp_c"] as double, 
-      iconURL: map["condition"]["icon"] as String,
+      iconURL: "https:$icon",
     );
   }
 

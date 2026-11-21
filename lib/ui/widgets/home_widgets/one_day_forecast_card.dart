@@ -33,7 +33,7 @@ class const OneDayForecastCard({
                       Divider(color: AppColors.darkBlue.withValues(alpha: .5)),
                       const SizedBox(height: 10),
                       Image.network(
-                        "https:${hourByHour[index].iconURL}",
+                        hourByHour[index].iconURL,
                         height: 50,
                         errorBuilder: (context, _, _) =>
                           const Icon(Icons.broken_image, size: 30),
